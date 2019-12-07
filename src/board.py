@@ -1,3 +1,5 @@
+from board_view import BoardView
+
 class Board:
     EMPTY_CELL = '.'
 
@@ -27,6 +29,9 @@ class Board:
 
     def get_valid_moves(self):
         return [i for i, v in enumerate(self.board[self.rows-1]) if v == Board.EMPTY_CELL]
+
+    def get_view_for(self, value):
+        return BoardView(self.board, value, Board.EMPTY_CELL)
 
     def _set(self, col, row, value):
         self._check_coords(col, row)
@@ -73,11 +78,7 @@ class Board:
 '''
 b=Board(6,4,3)
 b.drop(3,'X')
-print(b.get_valid_moves())
 b.drop(3,'X')
-print(b.get_valid_moves())
 b.drop(3,'X')
-print(b.get_valid_moves())
-b.drop(3,'X')
-print(b.get_valid_moves())
+print(b.get_view_for('X'))
 '''

@@ -25,6 +25,9 @@ class Board:
         else:
             raise ValueError('column {} is full'.format(col))
 
+    def get_valid_moves(self):
+        return [i for i, v in enumerate(self.board[self.rows-1]) if v == Board.EMPTY_CELL]
+
     def _set(self, col, row, value):
         self._check_coords(col, row)
         self.board[row][col] = value
@@ -69,10 +72,12 @@ class Board:
 
 '''
 b=Board(6,4,3)
-print(b.drop(1,'X'))
-print(b.drop(2,'O'))
-print(b.drop(2,'X'))
-print(b.drop(3,'O'))
-print(b.drop(3,'O'))
-print(b.drop(3,'X'))
+b.drop(3,'X')
+print(b.get_valid_moves())
+b.drop(3,'X')
+print(b.get_valid_moves())
+b.drop(3,'X')
+print(b.get_valid_moves())
+b.drop(3,'X')
+print(b.get_valid_moves())
 '''

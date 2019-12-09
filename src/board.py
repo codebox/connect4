@@ -7,7 +7,7 @@ class Board:
         self.cols = cols
         self.rows = rows
         self.line_length = line_length
-        self.board = [[Board.EMPTY_CELL for c in range(cols)] for r in range(rows)]
+        self.reset()
 
     def drop(self, col, value):
         col_values = list(map(lambda r: r[col], self.board))
@@ -32,6 +32,9 @@ class Board:
 
     def get_view_for(self, value):
         return BoardView(self.board, value, Board.EMPTY_CELL)
+
+    def reset(self):
+        self.board = [[Board.EMPTY_CELL for c in range(self.cols)] for r in range(self.rows)]
 
     def _set(self, col, row, value):
         self._check_coords(col, row)

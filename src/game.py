@@ -27,7 +27,7 @@ class Game:
         move = player.move(board_view)
         lines = self.board.drop(move, player.id)
 
-        print('Player {} plays {}'.format(player.id, move))
+        #print('Player {} plays {}'.format(player.id, move))
 
         if len(lines) > 0:
             self.finished = True

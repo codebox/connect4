@@ -8,5 +8,5 @@ class Player:
         return self.strategy.move(board_view)
 
     def update_with_result(self, result):
-    	self.score += result
+    	self.score += 1 if result > 0 else 0
     	self.strategy.update(result)

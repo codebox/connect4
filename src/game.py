@@ -2,6 +2,10 @@ from board_view import BoardView
 from board import Board
 
 class Game:
+    DRAW_REWARD = 0
+    WIN_REWARD = 1
+    LOSE_REWARD = -1
+
     def __init__(self, board, players):
         self.players = players
         self.board = board
@@ -12,6 +16,9 @@ class Game:
     def move(self):
         if len(self.board.get_valid_moves()) == 0:
             self.finished = True
+            for player in self.players:
+                player.update_with_result(Game.DRAW_REWARD)
+
             return
 
         self.move_counter += 1
@@ -25,3 +32,5 @@ class Game:
         if len(lines) > 0:
             self.finished = True
             self.winner = player.id
+            for p in self.players:
+                p.update_with_result(Game.WIN_REWARD if p.id == self.winner else Game.LOSE_REWARD)

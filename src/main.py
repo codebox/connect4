@@ -10,9 +10,7 @@ game = Game(board, players)
 while not game.finished:
     game.move()
 
-if game.winner:
-    print('Player {} wins'.format(game.winner))
-else:
-    print('Draw')
+for player in players:
+    print('Player {}: {}'.format(player.id, player.score))
 
 print(board)

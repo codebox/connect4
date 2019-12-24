@@ -10,6 +10,9 @@ class Board:
         self.reset()
 
     def drop(self, col, value):
+        if col < 0 or col >= self.cols:
+            raise ValueError('Bad column value {}'.format(col))
+
         col_values = list(map(lambda r: r[col], self.board))
         index_of_highest_empty_cell = len(self.board)
         while True:
@@ -77,11 +80,3 @@ class Board:
 
     def __str__(self):
         return '\n'.join(map(lambda r : ' '.join(map(str,r)), reversed(self.board)))
-
-'''
-b=Board(6,4,3)
-b.drop(3,'X')
-b.drop(3,'X')
-b.drop(3,'X')
-print(b.get_view_for('X'))
-'''

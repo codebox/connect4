@@ -1,25 +1,29 @@
 from game import Game
 from player import Player
+from board import Board
+
 
 class Tournament:
-
-    def __init__(self, board, game_count, strategies):
-        self.board = board
+    def __init__(self, game_count, strategies):
         self.game_count = game_count
         self.players = list(map(lambda t: Player(chr(65 + t[0]), t[1]), enumerate(strategies)))
 
     def run(self):
         game_number = 1
+        wins = {}
         while game_number <= self.game_count:
-            self.board.reset()
-            game = Game(self.board, self.players)
+            board = Board()
+            game = Game(board, self.players)
             while not game.finished:
-                game.move()
-            print(game.winner + ' wins')
+                player = game.get_next_player()
+                move = player.strategy.move(game, player.id)
+                game.move(move, player.id)
+            if game.winner not in wins:
+                wins[game.winner] = 0
+            wins[game.winner] += 1
+            print(str(game.winner) + ' wins game ' + str(game_number))
+            print(board)
             game_number += 1
 
         print('tournament finished')
-        for player in self.players:
-            print('{}: {}'.format(player.id, player.score))
-
-
+        print(wins)

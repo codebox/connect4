@@ -4,9 +4,5 @@ class Player:
         self.strategy = strategy
         self.score = 0
 
-    def move(self, board_view):
-        return self.strategy.move(board_view)
-
-    def update_with_result(self, result):
-    	self.score += 1 if result > 0 else 0
-    	self.strategy.update(result)
+    def move(self, game):
+        return self.strategy.move(game, self.id)

@@ -6,7 +6,7 @@ OTHER = 'O'
 
 class TestBoard(unittest.TestCase):
     def setUp(self):
-        self.board = Board(7, 6, 4)
+        self.board = Board()
 
     def test_vertical_line(self):
         self.assertEqual(self.board.drop(3, VAL), [])
@@ -87,27 +87,6 @@ class TestBoard(unittest.TestCase):
 
         self.assertEqual(self.board.get_valid_moves(), [0,1,2,4,5,6])
 
-    def test_reset(self):
-        self.board.drop(3, VAL)
-        self.board.drop(3, VAL)
-        self.board.drop(3, VAL)
-        self.board.drop(3, VAL)
-        self.board.drop(3, VAL)
-        self.board.drop(3, VAL)
-
-        self.assertEqual(self.board.get_valid_moves(), [0,1,2,4,5,6])
-        self.board.reset()
-        self.assertEqual(self.board.get_valid_moves(), [0,1,2,3,4,5,6])
-
-
-    def test_board_view(self):
-        self.assertEqual(self.board.get_view_for(VAL).to_id(), '....... ....... ....... ....... ....... .......')
-        self.board.drop(3, VAL)
-        self.assertEqual(self.board.get_view_for(VAL).to_id(), '....... ....... ....... ....... ....... ...X...')
-        self.board.drop(3, VAL)
-        self.assertEqual(self.board.get_view_for(VAL).to_id(), '....... ....... ....... ....... ...X... ...X...')
-        self.board.drop(3, OTHER)
-        self.assertEqual(self.board.get_view_for(VAL).to_id(), '....... ....... ....... ...o... ...X... ...X...')
 
 if __name__ == '__main__':
     unittest.main()

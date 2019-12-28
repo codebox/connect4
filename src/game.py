@@ -1,36 +1,38 @@
-from board_view import BoardView
-from board import Board
-
 class Game:
-    DRAW_REWARD = 0
-    WIN_REWARD = 1
-    LOSE_REWARD = -1
-
     def __init__(self, board, players):
         self.players = players
         self.board = board
-        self.move_counter = 0
         self.finished = False
         self.winner = None
+        self.next_player_index = 0
 
-    def move(self):
-        if len(self.board.get_valid_moves()) == 0:
+    def move(self, move, player_id):
+        if self.finished:
+            raise ValueError('No further moves allowed, game is finished')
+
+        next_player = self.get_next_player()
+        if player_id != next_player.id:
+            raise ValueError('Bad player_id expected {} but got {}'.format(next_player.id, player_id))
+
+        new_lines = self.board.drop(move, player_id)
+
+        if len(new_lines):
             self.finished = True
-            for player in self.players:
-                player.update_with_result(Game.DRAW_REWARD)
+            self.winner = player_id
 
-            return
+        else:
+            self.winner = None
+            is_board_full = len(self.board.get_valid_moves()) == 0
+            self.finished = is_board_full
 
-        self.move_counter += 1
-        player = self.players[(self.move_counter - 1) % len(self.players)]
-        board_view = BoardView(self.board.board, player.id, Board.EMPTY_CELL)
-        move = player.move(board_view)
-        lines = self.board.drop(move, player.id)
+        self.next_player_index = (self.next_player_index + 1) % len(self.players)
 
-        #print('Player {} plays {}'.format(player.id, move))
+    def get_next_player(self):
+        return self.players[self.next_player_index]
 
-        if len(lines) > 0:
-            self.finished = True
-            self.winner = player.id
-            for p in self.players:
-                p.update_with_result(Game.WIN_REWARD if p.id == self.winner else Game.LOSE_REWARD)
+    def clone(self):
+        game = Game(self.board.clone(), self.players)
+        game.finished = self.finished
+        game.winner = self.winner
+        game.next_player_index = self.next_player_index
+        return game

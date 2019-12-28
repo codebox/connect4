@@ -1,13 +1,11 @@
-from board_view import BoardView
-
 class Board:
     EMPTY_CELL = '.'
 
-    def __init__(self, cols, rows, line_length):
-        self.cols = cols
-        self.rows = rows
-        self.line_length = line_length
-        self.reset()
+    def __init__(self):
+        self.cols = 7
+        self.rows = 6
+        self.line_length = 4
+        self.board = [[Board.EMPTY_CELL for c in range(self.cols)] for r in range(self.rows)]
 
     def drop(self, col, value):
         if col < 0 or col >= self.cols:
@@ -33,11 +31,13 @@ class Board:
     def get_valid_moves(self):
         return [i for i, v in enumerate(self.board[self.rows-1]) if v == Board.EMPTY_CELL]
 
-    def get_view_for(self, value):
-        return BoardView(self.board, value, Board.EMPTY_CELL)
-
-    def reset(self):
-        self.board = [[Board.EMPTY_CELL for c in range(self.cols)] for r in range(self.rows)]
+    def clone(self):
+        board = Board()
+        board.cols = self.cols
+        board.rows = self.rows
+        board.line_length = self.line_length
+        board.board = [row[:] for row in self.board]
+        return board
 
     def _set(self, col, row, value):
         self._check_coords(col, row)

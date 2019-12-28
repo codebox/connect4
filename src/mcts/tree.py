@@ -1,6 +1,6 @@
+from .node import Node
+
+
 class Tree:
-	def __init__(self):
-		pass
-
-		
-
+    def __init__(self):
+        self.root = Node(None, None)

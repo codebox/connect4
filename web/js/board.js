@@ -15,11 +15,12 @@ const board = (() => {
 
         getState() {
             const state = [];
-            for (let row=0; row<this.rowCount; row++) {
-                state[row] = '';
+            for (let row=this.rowCount-1; row>=0; row--) {
+                let rowValue = '';
                 for (let col=0; col<this.columnCount; col++) {
-                    state[row] += this.getValue(col, row) || this.emptyValue
+                    rowValue += this.getValue(col, row) || this.emptyValue
                 }
+                state.push(rowValue);
             }
             return state;
         },

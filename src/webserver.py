@@ -29,9 +29,9 @@ def server_static(filename):
 
 @route('/connect4', method='POST')
 def move():
-    json = request.json
-    rows = json['board']
-    iter = json['iters']
+    requestJson = request.json
+    rows = requestJson['board']
+    iter = requestJson['iters']
 
     if iter > MAX_ITERS:
         abort(400, 'iter value too high, max ' + str(MAX_ITERS))
@@ -43,18 +43,25 @@ def move():
         abort(400, 'bad values in row')
 
     board = Board()
-    populate_board(board, [list(row) for row in rows])
+    winner = populate_board(board, [list(row) for row in rows])
+    move = None
 
-    players = [Player('0'), Player('1')]
-    game = Game(board, players)
-    strategy = MctsStrategy()
-    strategy.rollout_limit = iter
+    if not winner:
+        players = [Player('0'), Player('1')]
+        game = Game(board, players)
+        strategy = MctsStrategy()
+        strategy.rollout_limit = iter
 
-    move = strategy.move(game, '1')
+        move = strategy.move(game, '0')
+        lines = board.drop(move, '0');
+        winner = '0' if len(lines) else None
 
     response.content_type = 'application/json'
 
-    return str(move)
+    return dumps({
+        "move" : move,
+        "winner" : winner
+    })
 
 def populate_board(board, rows):
     for row in reversed(rows):
@@ -62,7 +69,7 @@ def populate_board(board, rows):
             if value != Board.EMPTY_CELL:
                 lines = board.drop(col, value)
                 if len(lines):
-                    abort(400, 'game already complete')
+                    return value
 
 
 run(host='localhost', port=8080, debug=True)

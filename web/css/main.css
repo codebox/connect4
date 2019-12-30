@@ -4,3 +4,13 @@
 .serverPiece{
     fill: yellow;
 }
+#msg {
+    margin: 10px 0;
+    text-align: center;
+    font-size: 2em;
+    font-family: sans-serif;
+}
+svg {
+    display: block;
+    margin: 0 auto;
+}

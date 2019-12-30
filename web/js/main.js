@@ -2,9 +2,12 @@ window.onload = (() => {
     "use strict";
     view.displayBoard(board);
 
+    view.setStateUserMove();
+
     view.onUserMove(col => {
         board.drop(col, board.userValue);
         view.displayBoard(board);
+        view.setStateWaitingForServer();
         fetch('http://localhost:8080/connect4', {
             'method' : 'POST',
             'body' : JSON.stringify({
@@ -18,9 +21,16 @@ window.onload = (() => {
             if (!response.ok) {
                 throw new Error('HTTP error, status = ' + response.status);
             }
-            response.json().then(move => {
-                board.drop(move, board.serverValue);
-                view.displayBoard(board);
+            response.json().then(response => {
+                if (response.move !== undefined) {
+                    board.drop(response.move, board.serverValue);
+                    view.displayBoard(board);
+                }
+                if (response.winner) {
+                    view.setStateGameOver(response.winner);
+                } else {
+                    view.setStateUserMove();
+                }
             })
         })
     });

@@ -1,10 +1,13 @@
 class Board:
+    COLUMN_COUNT = 7
+    ROW_COUNT = 6
+    LINE_LENGTH = 4
     EMPTY_CELL = '.'
 
     def __init__(self):
-        self.cols = 7
-        self.rows = 6
-        self.line_length = 4
+        self.cols = Board.COLUMN_COUNT
+        self.rows = Board.ROW_COUNT
+        self.line_length = Board.LINE_LENGTH
         self.board = [[Board.EMPTY_CELL for c in range(self.cols)] for r in range(self.rows)]
 
     def drop(self, col, value):

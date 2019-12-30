@@ -78,7 +78,7 @@ def simulate_game(game, tree, player_id):
 
 class MctsStrategy:
     def __init__(self):
-        self.rollout_limit = 100
+        self.rollout_limit = 500
 
     def move(self, game, player_id):
         tree = Tree()

@@ -25,5 +25,5 @@ set_state(board, [
 
 player_strategies = [RandomStrategy(), MctsStrategy()]
 
-tournament = Tournament(100, player_strategies)
+tournament = Tournament(1000, player_strategies)
 tournament.run()

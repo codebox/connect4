@@ -1,3 +1,6 @@
-#Inner:hover{
+.userPiece{
     fill: red;
+}
+.serverPiece{
+    fill: yellow;
 }

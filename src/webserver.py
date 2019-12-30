@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from bottle import route, run, abort, request, response, error
+from bottle import route, run, abort, request, response, error, static_file
 from json import dumps
 import re
 from board import Board
@@ -22,6 +22,10 @@ def json_error(error):
     response.content_type = 'application/json'
     return dumps(error_data)
 
+
+@route('/<filename:re:.*>')
+def server_static(filename):
+    return static_file(filename, root='../web')
 
 @route('/connect4', method='POST')
 def move():

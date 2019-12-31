@@ -2,6 +2,8 @@ const view = (() => {
     "use strict";
     const elMsg = document.querySelector('#msg'),
         elNewGame = document.querySelector('#newGame'),
+        elResetGame = document.querySelector('#restartGame'),
+        elQuitGame = document.querySelector('#quitGame'),
         elPreGameControls = document.querySelector('#preGameControls'),
         elInGameControls = document.querySelector('#inGameControls'),
         USER_CIRCLE_CLASS = 'userPiece',
@@ -9,7 +11,9 @@ const view = (() => {
 
     let allowUserMoves = false,
         onUserMoveHandler = () => {},
-        onNewGameHandler = () => {};
+        onNewGameHandler = () => {},
+        onResetGameHandler = () => {},
+        onQuitGameHandler = () => {};
 
     for (let col=0; col<board.columnCount; col++) {
         document.querySelector(`#cell${col+1}6 #Inner`).onclick = () => {
@@ -21,6 +25,14 @@ const view = (() => {
 
     elNewGame.onclick = () => {
         onNewGameHandler();
+    };
+
+    elResetGame.onclick = () => {
+        onResetGameHandler();
+    };
+
+    elQuitGame.onclick = () => {
+        onQuitGameHandler();
     };
 
     const STATE_PRE_GAME = 'pre-game',
@@ -70,6 +82,17 @@ const view = (() => {
         },
         onNewGame(handler) {
             onNewGameHandler = handler;
+        },
+        onQuitGame(handler) {
+            onQuitGameHandler = handler;
+        },
+        onResetGame(handler) {
+            onResetGameHandler = handler;
+        },
+        getPrefs() {
+            return {
+                userStarts: true
+            };
         },
         setStatePreGame() {
             updateUiForState(STATE_PRE_GAME);

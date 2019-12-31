@@ -36,7 +36,7 @@ window.onload = (() => {
                 throw new Error('HTTP error, status = ' + response.status);
             }
             response.json().then(response => {
-                if (response.move !== undefined) {
+                if (response.move !== null) {
                     const [col, row] = board.drop(response.move, board.serverValue);
                     view.displayBoard(board);
                     view.flashCell(col, row);

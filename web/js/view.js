@@ -8,6 +8,7 @@ const view = (() => {
         elInGameControls = document.querySelector('#inGameControls'),
         elUserStarts = document.querySelector('#userStarts'),
         elUserPlaysRed = document.querySelector('#userRed'),
+        elUserPlaysYellow = document.querySelector('#userYellow'),
         elDifficulty = document.querySelector('#difficulty'),
         elDifficultyValue = document.querySelector('#difficultyValue'),
         RED_CIRCLE_CLASS = 'redPiece',
@@ -20,11 +21,25 @@ const view = (() => {
         onQuitGameHandler = () => {};
 
     for (let col=0; col<board.columnCount; col++) {
-        document.querySelector(`#cell${col+1}6 #Inner`).onclick = () => {
-            if (allowUserMoves) {
-                onUserMoveHandler(col);
+        document.querySelectorAll(`.col${col+1}`).forEach(el => {
+            el.onclick = () => {
+                if (allowUserMoves) {
+                    onUserMoveHandler(col);
+                }
+            };
+        });
+    }
+
+    function flashCell(col, row, count=3) {
+        const circle = document.querySelector(`#cell${col+1}${row+1} #Outer`);
+        circle.classList.toggle('highlight');
+        setTimeout(() => {
+            if (count){
+                flashCell(col, row, count-1)
+            } else {
+                circle.classList.remove('highlight');
             }
-        };
+        },500);
     }
 
     elNewGame.onclick = () => {
@@ -39,6 +54,14 @@ const view = (() => {
         onQuitGameHandler();
     };
 
+    function toggleColourSelection() {
+        elUserPlaysRed.classList.toggle('selected');
+        elUserPlaysYellow.classList.toggle('selected');
+    }
+
+    elUserPlaysRed.onclick = toggleColourSelection;
+    elUserPlaysYellow.onclick = toggleColourSelection;
+
     function updateDifficulty(){
         elDifficultyValue.innerHTML = ['', 'Easy', 'Medium', 'Hard', 'Expert'][elDifficulty.value]
     }
@@ -52,7 +75,7 @@ const view = (() => {
         STATE_SERVER_TURN = 'server turn';
 
     function toggle(el, isVisible) {
-        el.style.display = isVisible ? 'block' : 'none';
+        el.style.display = isVisible ? 'flex' : 'none';
     }
 
     function updateUiForState(state, stateData) {
@@ -105,9 +128,12 @@ const view = (() => {
         getPrefs() {
             return {
                 userStarts: elUserStarts.checked,
-                userColour: elUserPlaysRed.checked ? 'red' : 'yellow',
+                userColour: elUserPlaysRed.classList.contains('selected') ? 'red' : 'yellow',
                 difficulty : Math.pow(10, Number(elDifficulty.value))
             };
+        },
+        flashCell(col, row) {
+            flashCell(col, row, 4)
         },
         setStatePreGame() {
             updateUiForState(STATE_PRE_GAME, 'Click NEW GAME to play');

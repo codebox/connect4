@@ -37,8 +37,9 @@ window.onload = (() => {
             }
             response.json().then(response => {
                 if (response.move !== undefined) {
-                    board.drop(response.move, board.serverValue);
+                    const [col, row] = board.drop(response.move, board.serverValue);
                     view.displayBoard(board);
+                    view.flashCell(col, row);
                 }
                 if (response.winner) {
                     view.setStateGameOver(response.winner);

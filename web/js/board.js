@@ -49,6 +49,8 @@ const board = (() => {
                 values[row] = [];
             }
             values[row][col] = value;
+
+            return [col, row];
         },
 
         columnIsFull(col) {

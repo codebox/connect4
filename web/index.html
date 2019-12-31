@@ -7,8 +7,7 @@
 </head>
 <body>
     <div id="container">
-        <p id="msg">Go</p>
-        <svg width="740px" height="640px" viewBox="0 0 740 640" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <svg viewBox="0 0 740 640" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
             <title>Connect4</title>
             <desc>Created with Sketch.</desc>
@@ -240,30 +239,29 @@
                 </g>
             </g>
         </svg>
+        <p id="msg"></p>
         <div id="controls">
             <div id="preGameControls">
-                <button id="newGame">NEW GAME</button>
-                <div>
+                <div class="controlRow">
+                    <button id="newGame">NEW GAME</button>
+                </div>
+
+                <div class="controlRow">
                     <label for="userStarts">User Starts</label>
                     <input id="userStarts" type="radio" name="whoStarts" value="user" checked>
-                </div>
-                <div>
                     <label for="serverStarts">Computer Starts</label>
                     <input id="serverStarts" type="radio" name="whoStarts" value="server">
                 </div>
 
-                <div>
-                    <label for="userRed">Red</label>
-                    <input id="userRed" type="radio" name="userColour" value="red" checked>
+                <div id="controlColourRow" class="controlRow">
+                    <label>Colour:</label>
+                    <div id="userRed" class="userColour selected"></div>
+                    <div id="userYellow" class="userColour"></div>
                 </div>
-                <div>
-                    <label for="userYellow">Yellow</label>
-                    <input id="userYellow" type="radio" name="userColour" value="yellow" >
-                </div>
-                <div>
-                    <label for="difficulty">Difficulty</label>
-                    <input type="range" id="difficulty" min="1" max="4" list="difficultyMarkers">
-                    <span id="difficultyValue"></span>
+
+                <div class="controlRow">
+                    <input type="range" id="difficulty" min="1" max="4" list="difficultyMarkers"><br>
+                    <div id="difficultyValue"></div>
                     <datalist id="difficultyMarkers">
                         <option value="1" label="Easy"></option>
                         <option value="2" label="Medium"></option>
@@ -273,8 +271,10 @@
                 </div>
             </div>
             <div id="inGameControls">
-                <button id="restartGame">RESTART</button>
-                <button id="quitGame">QUIT</button>
+                <div class="controlRow">
+                    <button id="restartGame">RESTART</button>
+                    <button id="quitGame">QUIT</button>
+                </div>
             </div>
         </div>
     </div>

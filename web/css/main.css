@@ -1,7 +1,15 @@
-#container {
+body{
+    font-family: sans-serif;
+}
+#container, #preGameControls, #inGameControls {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+#container {
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
 }
 .redPiece{
     fill: red;
@@ -10,8 +18,55 @@
     fill: yellow;
 }
 #msg {
-    margin: 10px 0;
+    color: #4273b0;
+    margin: -2px 0 10px 0;
+    padding: 10px 0;
     text-align: center;
-    font-size: 2em;
-    font-family: sans-serif;
+    border: 2px solid #4273b0;
+    width: 100%;
+}
+.controlRow {
+    margin: 5px 0;
+}
+#difficultyValue {
+    text-align: center;
+}
+
+#userRed {
+    background-color: red;
+}
+#userYellow {
+    background-color: yellow;
+}
+.userColour {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    margin-left: 5px;
+    cursor:pointer;
+}
+.userColour.selected {
+    border: 1px solid black;
+    cursor:default;
+}
+#controlColourRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+button {
+    padding: 5px 10px;
+    border: 1px solid black;
+    border-radius: 2px;
+    cursor: pointer;
+}
+button:hover {
+    border-width: 2px;
+    margin: -1px;
+}
+svg #Outer.highlight {
+    fill: white;
+    stroke: white;
 }

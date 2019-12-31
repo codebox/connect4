@@ -2,7 +2,11 @@ window.onload = (() => {
     "use strict";
     view.displayBoard(board);
 
-    view.setStateUserMove();
+    view.setStatePreGame();
+
+    view.onNewGame(() => {
+        view.setStateUserMove();
+    });
 
     view.onUserMove(col => {
         board.drop(col, board.userValue);

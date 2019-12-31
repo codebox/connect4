@@ -18,7 +18,7 @@ const board = (() => {
             for (let row=this.rowCount-1; row>=0; row--) {
                 let rowValue = '';
                 for (let col=0; col<this.columnCount; col++) {
-                    rowValue += this.getValue(col, row) || this.emptyValue
+                    rowValue += this.getValue(col, row) || this.emptyValue;
                 }
                 state.push(rowValue);
             }

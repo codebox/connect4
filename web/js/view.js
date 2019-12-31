@@ -1,12 +1,15 @@
 const view = (() => {
     "use strict";
-    const holes = document.querySelector('#Holes'),
-        msg = document.querySelector('#msg'),
+    const elMsg = document.querySelector('#msg'),
+        elNewGame = document.querySelector('#newGame'),
+        elPreGameControls = document.querySelector('#preGameControls'),
+        elInGameControls = document.querySelector('#inGameControls'),
         USER_CIRCLE_CLASS = 'userPiece',
         SERVER_CIRCLE_CLASS = 'serverPiece';
 
     let allowUserMoves = false,
-        onUserMoveHandler = () => {};
+        onUserMoveHandler = () => {},
+        onNewGameHandler = () => {};
 
     for (let col=0; col<board.columnCount; col++) {
         document.querySelector(`#cell${col+1}6 #Inner`).onclick = () => {
@@ -16,12 +19,39 @@ const view = (() => {
         };
     }
 
-    // holes.onclick=(e => {
-    //     const target = e.target;
-    //     if (target.id='Inner'){
-    //         target.setAttribute('fill', 'red')
-    //     }
-    // });
+    elNewGame.onclick = () => {
+        onNewGameHandler();
+    };
+
+    const STATE_PRE_GAME = 'pre-game',
+        STATE_USER_TURN = 'user turn',
+        STATE_SERVER_TURN = 'server turn',
+        STATE_GAME_OVER = 'game over';
+
+    function toggle(el, isVisible) {
+        el.style.display = isVisible ? 'block' : 'none';
+    }
+
+    function updateUiForState(state, stateData) {
+        allowUserMoves = state === STATE_USER_TURN;
+
+        let msg;
+        if (state === STATE_PRE_GAME) {
+            msg = 'Click NEW GAME when ready to play'
+        } else if (state === STATE_USER_TURN) {
+            msg = 'Your turn';
+        } else if (state === STATE_SERVER_TURN) {
+            msg = 'Thinking...';
+        } else if (state === STATE_GAME_OVER) {
+            msg = stateData;
+        } else {
+            msg = '';
+        }
+        elMsg.innerHTML = msg;
+
+        toggle(elPreGameControls, state === STATE_PRE_GAME);
+        toggle(elInGameControls, state === STATE_USER_TURN || state === STATE_USER_TURN);
+    }
 
     return {
         displayBoard(board) {
@@ -38,23 +68,28 @@ const view = (() => {
         onUserMove(handler) {
             onUserMoveHandler = handler;
         },
+        onNewGame(handler) {
+            onNewGameHandler = handler;
+        },
+        setStatePreGame() {
+            updateUiForState(STATE_PRE_GAME);
+        },
         setStateUserMove() {
-            allowUserMoves = true;
-            msg.innerHTML = 'Your move';
+            updateUiForState(STATE_USER_TURN);
         },
         setStateWaitingForServer() {
-            allowUserMoves = false;
-            msg.innerHTML = 'Thinking...';
+            updateUiForState(STATE_SERVER_TURN);
         },
         setStateGameOver(winner) {
-            allowUserMoves = false;
+            let resultMsg;
             if (winner === '1') {
-                msg.innerHTML = 'You win...this time';
+                resultMsg = 'You win...this time';
             } else if (winner === '0') {
-                msg.innerHTML = 'YOU LOSE !!';
+                resultMsg = 'YOU LOSE !!';
             } else {
-                msg.innerHTML = "It's a draw";
+                resultMsg = "It's a draw";
             }
+            updateUiForState(STATE_GAME_OVER, resultMsg);
         }
     }
 

@@ -21,8 +21,8 @@ class Tournament:
             if game.winner not in wins:
                 wins[game.winner] = 0
             wins[game.winner] += 1
-            print(str(game.winner) + ' wins game ' + str(game_number))
-            print(board)
+            # print(str(game.winner) + ' wins game ' + str(game_number))
+            # print(board)
             game_number += 1
 
         print('tournament finished')

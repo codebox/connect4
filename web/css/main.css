@@ -3,10 +3,10 @@
     flex-direction: column;
     align-items: center;
 }
-.userPiece{
+.redPiece{
     fill: red;
 }
-.serverPiece{
+.yellowPiece{
     fill: yellow;
 }
 #msg {

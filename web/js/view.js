@@ -6,8 +6,12 @@ const view = (() => {
         elQuitGame = document.querySelector('#quitGame'),
         elPreGameControls = document.querySelector('#preGameControls'),
         elInGameControls = document.querySelector('#inGameControls'),
-        USER_CIRCLE_CLASS = 'userPiece',
-        SERVER_CIRCLE_CLASS = 'serverPiece';
+        elUserStarts = document.querySelector('#userStarts'),
+        elUserPlaysRed = document.querySelector('#userRed'),
+        elDifficulty = document.querySelector('#difficulty'),
+        elDifficultyValue = document.querySelector('#difficultyValue'),
+        RED_CIRCLE_CLASS = 'redPiece',
+        YELLOW_CIRCLE_CLASS = 'yellowPiece';
 
     let allowUserMoves = false,
         onUserMoveHandler = () => {},
@@ -35,10 +39,17 @@ const view = (() => {
         onQuitGameHandler();
     };
 
+    function updateDifficulty(){
+        elDifficultyValue.innerHTML = ['', 'Easy', 'Medium', 'Hard', 'Expert'][elDifficulty.value]
+    }
+    elDifficulty.oninput = () => {
+        updateDifficulty();
+    };
+    updateDifficulty();
+
     const STATE_PRE_GAME = 'pre-game',
         STATE_USER_TURN = 'user turn',
-        STATE_SERVER_TURN = 'server turn',
-        STATE_GAME_OVER = 'game over';
+        STATE_SERVER_TURN = 'server turn';
 
     function toggle(el, isVisible) {
         el.style.display = isVisible ? 'block' : 'none';
@@ -49,13 +60,11 @@ const view = (() => {
 
         let msg;
         if (state === STATE_PRE_GAME) {
-            msg = 'Click NEW GAME when ready to play'
+            msg = stateData;
         } else if (state === STATE_USER_TURN) {
             msg = 'Your turn';
         } else if (state === STATE_SERVER_TURN) {
             msg = 'Thinking...';
-        } else if (state === STATE_GAME_OVER) {
-            msg = stateData;
         } else {
             msg = '';
         }
@@ -67,13 +76,17 @@ const view = (() => {
 
     return {
         displayBoard(board) {
+            const userPlaysRed = this.getPrefs().userColour === 'red',
+                userPieceClass = userPlaysRed ? RED_CIRCLE_CLASS : YELLOW_CIRCLE_CLASS,
+                serverPieceClass = userPlaysRed ? YELLOW_CIRCLE_CLASS : RED_CIRCLE_CLASS;
+
             for (let row=0; row<board.rowCount; row++) {
                 for (let col=0; col<board.columnCount; col++) {
                     const circle = document.querySelector(`#cell${col+1}${row+1} #Inner`),
                         value = board.getValue(col, row);
 
-                    circle.classList.toggle(USER_CIRCLE_CLASS, value === board.userValue);
-                    circle.classList.toggle(SERVER_CIRCLE_CLASS, value === board.serverValue);
+                    circle.classList.toggle(userPieceClass, value === board.userValue);
+                    circle.classList.toggle(serverPieceClass, value === board.serverValue);
                 }
             }
         },
@@ -91,11 +104,13 @@ const view = (() => {
         },
         getPrefs() {
             return {
-                userStarts: true
+                userStarts: elUserStarts.checked,
+                userColour: elUserPlaysRed.checked ? 'red' : 'yellow',
+                difficulty : Math.pow(10, Number(elDifficulty.value))
             };
         },
         setStatePreGame() {
-            updateUiForState(STATE_PRE_GAME);
+            updateUiForState(STATE_PRE_GAME, 'Click NEW GAME to play');
         },
         setStateUserMove() {
             updateUiForState(STATE_USER_TURN);
@@ -112,7 +127,7 @@ const view = (() => {
             } else {
                 resultMsg = "It's a draw";
             }
-            updateUiForState(STATE_GAME_OVER, resultMsg);
+            updateUiForState(STATE_PRE_GAME, resultMsg);
         }
     }
 

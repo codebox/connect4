@@ -243,6 +243,34 @@
         <div id="controls">
             <div id="preGameControls">
                 <button id="newGame">NEW GAME</button>
+                <div>
+                    <label for="userStarts">User Starts</label>
+                    <input id="userStarts" type="radio" name="whoStarts" value="user" checked>
+                </div>
+                <div>
+                    <label for="serverStarts">Computer Starts</label>
+                    <input id="serverStarts" type="radio" name="whoStarts" value="server">
+                </div>
+
+                <div>
+                    <label for="userRed">Red</label>
+                    <input id="userRed" type="radio" name="userColour" value="red" checked>
+                </div>
+                <div>
+                    <label for="userYellow">Yellow</label>
+                    <input id="userYellow" type="radio" name="userColour" value="yellow" >
+                </div>
+                <div>
+                    <label for="difficulty">Difficulty</label>
+                    <input type="range" id="difficulty" min="1" max="4" list="difficultyMarkers">
+                    <span id="difficultyValue"></span>
+                    <datalist id="difficultyMarkers">
+                        <option value="1" label="Easy"></option>
+                        <option value="2" label="Medium"></option>
+                        <option value="3" label="Hard"></option>
+                        <option value="4" label="Expert"></option>
+                    </datalist>
+                </div>
             </div>
             <div id="inGameControls">
                 <button id="restartGame">RESTART</button>

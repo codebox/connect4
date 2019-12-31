@@ -18,15 +18,15 @@ window.onload = (() => {
 
     view.onQuitGame(() => {
         view.setStatePreGame();
-
     });
 
     function requestServerMove() {
+        view.setStateWaitingForServer();
         fetch('http://localhost:8080/connect4', {
             'method' : 'POST',
             'body' : JSON.stringify({
                 'board' : board.getState(),
-                'iters' : 1000
+                'iters' : view.getPrefs().difficulty
             }),
             'headers': {
                 'Content-Type': 'application/json'
@@ -60,7 +60,6 @@ window.onload = (() => {
     view.onUserMove(col => {
         board.drop(col, board.userValue);
         view.displayBoard(board);
-        view.setStateWaitingForServer();
         requestServerMove();
     });
 })();

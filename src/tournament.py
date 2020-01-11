@@ -21,6 +21,8 @@ class Tournament:
             if game.winner not in wins:
                 wins[game.winner] = 0
             wins[game.winner] += 1
+            for player in self.players:
+                player.strategy.update(player.id, game.winner)
             # print(str(game.winner) + ' wins game ' + str(game_number))
             # print(board)
             game_number += 1

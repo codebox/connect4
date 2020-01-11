@@ -18,7 +18,7 @@ class MctsStrategy:
         #print(list(map(lambda c: c.visits, tree.root.children)))
         return max(tree.root.children, key=lambda c: c.visits).action[1]
 
-    def update(self, result):
+    def update(self, player_id, winner):
         pass
 
     def __simulate_game(self, game, tree, player_id):

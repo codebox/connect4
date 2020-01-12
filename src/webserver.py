@@ -7,6 +7,7 @@ from board import Board
 from game import Game
 from player import Player
 from mcts.mcts_strategy import MctsStrategy
+from nn.nn_strategy import NnStrategy
 
 ROW_PATTERN = re.compile(r"^[\.01]{" + str(Board.COLUMN_COUNT) + "}")
 MAX_ITERS = 10000
@@ -49,8 +50,9 @@ def move():
     if not winner:
         players = [Player('0'), Player('1')]
         game = Game(board, players)
-        strategy = MctsStrategy()
-        strategy.rollout_limit = iter
+        # strategy = MctsStrategy()
+        # strategy.rollout_limit = iter
+        strategy = NnStrategy()
 
         move = strategy.move(game, '0')
         lines = board.drop(move, '0');

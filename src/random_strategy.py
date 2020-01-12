@@ -10,3 +10,6 @@ class RandomStrategy:
 
     def update(self, player_id, winner):
         pass
+
+    def on_end(self):
+        pass

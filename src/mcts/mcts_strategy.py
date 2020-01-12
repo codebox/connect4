@@ -6,7 +6,7 @@ from random_strategy import RandomStrategy
 
 class MctsStrategy:
     def __init__(self):
-        self.rollout_limit = 500
+        self.rollout_limit = 50
 
     def move(self, game, player_id):
         tree = Tree()
@@ -19,6 +19,9 @@ class MctsStrategy:
         return max(tree.root.children, key=lambda c: c.visits).action[1]
 
     def update(self, player_id, winner):
+        pass
+
+    def on_end(self):
         pass
 
     def __simulate_game(self, game, tree, player_id):

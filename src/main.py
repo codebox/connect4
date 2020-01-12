@@ -1,29 +1,24 @@
 from tournament import Tournament
 from random_strategy import RandomStrategy
+from nn.nn_strategy import NnStrategy
 from mcts.mcts_strategy import MctsStrategy
+from player import Player
+import signal, sys
 
 
-'''
-def set_state(board, row_strings):
-    rows_rev = list(map(list, row_strings))
-    rows = list(reversed(rows_rev))
-    for row in rows:
-        i=0
-        for c in row:
-            if c != Board.EMPTY_CELL:
-                board.drop(i, c)
-            i += 1
+nn = NnStrategy()
+rd = RandomStrategy()
+mc = MctsStrategy()
 
-board = Board()
+def signal_handler(sig, frame):
+    nn.on_end()
+    sys.exit(0)
+signal.signal(signal.SIGINT, signal_handler)
 
-set_state(board, [
-    '....',
-    'ABBA',
-    'ABBA'
-])
-'''
+pm = Player('M', mc)
+pn = Player('N', nn)
+pr = Player('R', rd)
 
-player_strategies = [RandomStrategy(), MctsStrategy()]
-
-tournament = Tournament(1000, player_strategies)
+tournament = Tournament(100000, [pm, pn])
 tournament.run()
+nn.on_end()

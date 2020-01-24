@@ -33,10 +33,15 @@ class Tournament:
 
             game_number += 1
             if game_number % 100 == 0:
-                print(recent_wins['N'])
+                print(recent_wins)
                 recent_wins[None] = 0
                 for player in self.players:
                     recent_wins[player.id] = 0
 
+
         print('tournament finished')
         print(wins)
+        self.close()
+
+    def close(self):
+        [p.strategy.on_end() for p in self.players]

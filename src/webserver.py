@@ -8,6 +8,9 @@ from game import Game
 from player import Player
 from mcts.mcts_strategy import MctsStrategy
 from nn.nn_strategy import NnStrategy
+from nn.network_64x2_64x2_64_64 import NetworkA
+from nn.network_128x4_64_64 import NetworkB
+from nn.network_64x4_64x2_64x2_64 import NetworkD
 
 ROW_PATTERN = re.compile(r"^[\.01]{" + str(Board.COLUMN_COUNT) + "}")
 MAX_ITERS = 10000
@@ -52,7 +55,8 @@ def move():
         game = Game(board, players)
         # strategy = MctsStrategy()
         # strategy.rollout_limit = iter
-        strategy = NnStrategy()
+        # strategy = NnStrategy(NetworkA(), False)
+        strategy = NnStrategy(NetworkD(), False)
 
         move = strategy.move(game, '0')
         lines = board.drop(move, '0');

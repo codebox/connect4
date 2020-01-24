@@ -6,7 +6,7 @@ from random_strategy import RandomStrategy
 
 class MctsStrategy:
     def __init__(self):
-        self.rollout_limit = 50
+        self.rollout_limit = 500
 
     def move(self, game, player_id):
         tree = Tree()

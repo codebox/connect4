@@ -1,15 +1,18 @@
-from .network import Network
 from board import Board
 from random import random, choice
+from strategy import Strategy
 
 
-class NnStrategy:
+class NnStrategy(Strategy):
 
-    def __init__(self, network, explore=True):
+    def __init__(self, network, exploration_factor=0):
         self.discount_factor = 0.9
-        self.exploration_factor = 0.1 if explore else 0
+        self.exploration_factor = exploration_factor
         self.current_game_moves = []
         self.network = network
+        self.current_batch_board_states = []
+        self.current_batch_rewards = []
+        self.batch_size = 100
 
     def move(self, game, player_id):
         move_scores = {}
@@ -38,18 +41,26 @@ class NnStrategy:
 
         return move_to_play
 
-    def update(self, player_id, winner):
-        reward = 1 if winner == player_id else 0 if winner is None else -1
+    def game_over(self, reward):
         for board_state, move in reversed(self.current_game_moves):
-            self.network.update(board_state, reward)
+            self.current_batch_board_states.append(board_state)
+            self.current_batch_rewards.append(reward)
             reward *= self.discount_factor
+
+        if len(self.current_batch_rewards) >= self.batch_size:
+            self.network.update(self.current_batch_board_states, self.current_batch_rewards)
+            self.current_batch_board_states = []
+            self.current_batch_rewards = []
 
         self.current_game_moves = []
 
-    def on_end(self):
+    def save(self):
         self.network.save()
 
+    def get_name(self):
+        return self.network.get_name()
+
     def _build_board_state(self, game, player_id):
-        bs= list(map(lambda row: list(map(lambda v: 1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1, row)), game.board.board))
+        bs = list(map(lambda row: list(map(lambda v: 1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1, row)), game.board.board))
 
         return bs

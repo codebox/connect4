@@ -4,10 +4,10 @@ from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Conv2D, MaxPooling2D
 from nn.network import Network
 
-class NetworkB(Network):
+class NetworkE(Network):
     def __init__(self):
         model = Sequential()
-        model.add(Conv2D(128, (4,4), input_shape=(6, 7, 1)))
+        model.add(Conv2D(256, (4,4), input_shape=(6, 7, 1)))
         model.add(Activation('relu'))
 
         model.add(Flatten())
@@ -27,7 +27,7 @@ class NetworkB(Network):
         super().__init__(model)
 
     def get_save_file(self):
-        return 'model_128-4_64_64.h5'
+        return 'model_256-4_64_64.h5'
 
     def get_name(self):
-        return 'B'
+        return 'E'

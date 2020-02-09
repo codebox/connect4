@@ -3,13 +3,13 @@ from player import Player
 from board import Board
 from random import shuffle
 
+
 class Tournament:
     def __init__(self, game_count, players):
         self.game_count = game_count
-        # self.players = list(map(lambda t: Player(chr(65 + t[0]), t[1]), enumerate(strategies)))
         self.players = players
 
-    def run(self):
+    def run(self, save_on_finish=True, update_handler=None):
         game_number = 1
         wins = {None:0}
         recent_wins = {None:0}
@@ -29,19 +29,21 @@ class Tournament:
             wins[game.winner] += 1
             recent_wins[game.winner] += 1
             for player in self.players:
-                player.strategy.update(player.id, game.winner)
+                reward = 1 if player.id == game.winner else 0 if game.winner is None else -1
+                player.strategy.game_over(reward)
 
             game_number += 1
             if game_number % 100 == 0:
-                print(recent_wins)
+                if update_handler:
+                    update_handler(recent_wins)
                 recent_wins[None] = 0
                 for player in self.players:
                     recent_wins[player.id] = 0
 
+        if save_on_finish:
+            self.close()
 
-        print('tournament finished')
-        print(wins)
-        self.close()
+        return wins
 
     def close(self):
-        [p.strategy.on_end() for p in self.players]
+        [p.strategy.save() for p in self.players]

@@ -2,11 +2,12 @@ import random, math
 from .node import Node
 from .tree import Tree
 from random_strategy import RandomStrategy
+from strategy import Strategy
 
 
-class MctsStrategy:
-    def __init__(self):
-        self.rollout_limit = 500
+class MctsStrategy(Strategy):
+    def __init__(self, rollout_limit):
+        self.rollout_limit = rollout_limit
 
     def move(self, game, player_id):
         tree = Tree()
@@ -14,15 +15,7 @@ class MctsStrategy:
         for _ in range(self.rollout_limit):
             self.__simulate_game(game.clone(), tree, player_id)
 
-        #print(list(map(lambda c: c.score, tree.root.children)))
-        #print(list(map(lambda c: c.visits, tree.root.children)))
         return max(tree.root.children, key=lambda c: c.visits).action[1]
-
-    def update(self, player_id, winner):
-        pass
-
-    def on_end(self):
-        pass
 
     def __simulate_game(self, game, tree, player_id):
         current_node = tree.root
@@ -91,3 +84,13 @@ class MctsStrategy:
         if node.visits == 0:
             return math.inf
         return node.score/node.visits + 2 * (math.log(node.parent.visits) / node.visits) ** 0.5
+
+    def get_name(self):
+        return 'MC_' + str(self.rollout_limit)
+
+    def game_over(self, reward):
+        pass
+
+    def save(self):
+        pass
+

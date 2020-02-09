@@ -1,15 +1,16 @@
 import random
+from strategy import Strategy
 
 
-class RandomStrategy:
-    def __init__(self):
-        pass
-
+class RandomStrategy(Strategy):
     def move(self, game, player_id):
         return random.choice(game.board.get_valid_moves())
 
-    def update(self, player_id, winner):
+    def game_over(self, reward):
         pass
 
-    def on_end(self):
+    def save(self):
         pass
+
+    def get_name(self):
+        return 'RND'

@@ -36,3 +36,6 @@ class NetworkC(Network):
 
     def get_save_file(self):
         return 'model_64-2_64-2_64-2_64.h5'
+
+    def get_name(self):
+        return 'C'

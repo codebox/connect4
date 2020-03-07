@@ -2,12 +2,14 @@ from board import Board
 from random import random, choice
 from strategy import Strategy
 
+def no_exploration(g):
+    return 0
 
 class NnStrategy(Strategy):
 
-    def __init__(self, network, exploration_factor=0):
+    def __init__(self, network, get_exploration_factor=no_exploration):
         self.discount_factor = 0.9
-        self.exploration_factor = exploration_factor
+        self.get_exploration_factor = get_exploration_factor
         self.current_game_moves = []
         self.network = network
         self.current_batch_board_states = []
@@ -19,7 +21,7 @@ class NnStrategy(Strategy):
 
         valid_moves = game.board.get_valid_moves()
 
-        if random() < self.exploration_factor:
+        if random() < self.get_exploration_factor(game.game_number):
             move_to_play = choice(valid_moves)
 
             game_copy = game.clone()

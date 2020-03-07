@@ -20,12 +20,13 @@ class Tournament:
         while game_number <= self.game_count:
             board = Board()
             shuffle(self.players)
-            game = Game(board, self.players)
+            game = Game(board, self.players, game_number)
             while not game.finished:
                 player = game.get_next_player()
                 move = player.strategy.move(game, player.id)
                 game.move(move, player.id)
 
+            print(game.winner or '-', end='', flush=True)
             wins[game.winner] += 1
             recent_wins[game.winner] += 1
             for player in self.players:
@@ -33,7 +34,7 @@ class Tournament:
                 player.strategy.game_over(reward)
 
             game_number += 1
-            if game_number % 100 == 0:
+            if game_number % 5 == 0:
                 if update_handler:
                     update_handler(recent_wins)
                 recent_wins[None] = 0

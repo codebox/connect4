@@ -1,6 +1,6 @@
 from itertools import zip_longest
 
-with open('../log.txt', 'r') as f:
+with open('../log_d_09.txt', 'r') as f:
     d={}
     # 1000,A:51,RND:49
     for line in f.readlines():

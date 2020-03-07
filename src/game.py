@@ -1,7 +1,8 @@
 class Game:
-    def __init__(self, board, players):
+    def __init__(self, board, players, game_number):
         self.players = players
         self.board = board
+        self.game_number = game_number
         self.finished = False
         self.winner = None
         self.next_player_index = 0
@@ -31,7 +32,7 @@ class Game:
         return self.players[self.next_player_index]
 
     def clone(self):
-        game = Game(self.board.clone(), self.players)
+        game = Game(self.board.clone(), self.players, self.game_number)
         game.finished = self.finished
         game.winner = self.winner
         game.next_player_index = self.next_player_index

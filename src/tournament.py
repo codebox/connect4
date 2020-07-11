@@ -2,7 +2,7 @@ from game import Game
 from player import Player
 from board import Board
 from random import shuffle
-
+from progress.bar import IncrementalBar
 
 class Tournament:
     def __init__(self, game_count, players):
@@ -13,6 +13,9 @@ class Tournament:
         game_number = 1
         wins = {None:0}
         recent_wins = {None:0}
+        player_ids = ' vs '.join(map(lambda p: p.id, self.players))
+        bar = IncrementalBar('Running Tournament: {}'.format(player_ids), max=self.game_count)
+
         for player in self.players:
             wins[player.id] = 0
             recent_wins[player.id] = 0
@@ -21,12 +24,13 @@ class Tournament:
             board = Board()
             shuffle(self.players)
             game = Game(board, self.players, game_number)
+            bar.next()
+
             while not game.finished:
                 player = game.get_next_player()
                 move = player.strategy.move(game, player.id)
                 game.move(move, player.id)
 
-            print(game.winner or '-', end='', flush=True)
             wins[game.winner] += 1
             recent_wins[game.winner] += 1
             for player in self.players:
@@ -40,6 +44,8 @@ class Tournament:
                 recent_wins[None] = 0
                 for player in self.players:
                     recent_wins[player.id] = 0
+
+        bar.finish()
 
         if save_on_finish:
             self.close()

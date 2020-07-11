@@ -25,7 +25,7 @@ class Network(ABC):
         model_path = os.path.join(save_dir, self.get_save_file())
         if os.path.isfile(model_path):
             self.model = load_model(model_path)
-            print('Loaded model from', model_path)
+            print(('Loaded model from', model_path))
     
     def save(self):
         if not os.path.isdir(save_dir):

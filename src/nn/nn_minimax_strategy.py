@@ -47,7 +47,7 @@ class NnMiniMaxStrategy(Strategy):
             else:
                 move_scores[move] = fn_eval(game_copy)
 
-        best_move = max(move_scores.keys(), key=lambda k: move_scores.get(k))
+        best_move = max(list(move_scores.keys()), key=lambda k: move_scores.get(k))
         return best_move, move_scores[best_move]
 
     def _get_other_player(self, player_id):
@@ -63,6 +63,6 @@ class NnMiniMaxStrategy(Strategy):
         return self.network.get_name() + 'mm'
 
     def _build_board_state(self, game, player_id):
-        bs = list(map(lambda row: list(map(lambda v: 1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1, row)), game.board.board))
+        bs = list([list([1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1 for v in row]) for row in game.board.board])
 
         return bs

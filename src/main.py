@@ -83,14 +83,12 @@ def self_play_group(count):
                 p2 = Player('B', benchmark)
                 tournament = Tournament(benchmark_batch_size, [p1, p2])
                 results = tournament.run(False)
-                print('Results for {} vs {}: {}'.format(benchmark.get_name(), ns.get_name(), results))
+                print('Results for {} vs {}: {}\n'.format(benchmark.get_name(), ns.get_name(), results))
                 log('{},{}:{},{}:{}'.format((round-1) * self_play_batch_size, ns.get_name(), results.get('N', 0), benchmark.get_name(),results.get('B', 0)))
 
         for p1,p2 in itertools.combinations(players,2):
-            print('Self-play training {} vs {}'.format(p1.id, p2.id), end='', flush=True)
             tournament = Tournament(self_play_batch_size, [p1, p2])
-            tournament.run(True, lambda r: print('.', end='', flush=True))
-            print('')
+            tournament.run(True)
 
         print('- - - - - - - - - -')
 
@@ -101,7 +99,7 @@ def test_ensemble():
     p1 = Player('N', NnStrategy(NetworkBEnsemble('N')))
     p2 = Player('X', MctsStrategy(1000))
     tournament = Tournament(100, [p2, p1])
-    result = tournament.run(False, lambda r: print('.', end='', flush=True))
+    result = tournament.run(False)
     print(result)
 
 # test_ensemble()
@@ -111,8 +109,9 @@ def test_minimax(lookahead_limit):
     p1 = Player('N', mms)
     p2 = Player('X', MctsStrategy(1000))
     tournament = Tournament(100, [p2, p1])
-    result = tournament.run(False, lambda r: print('.', end='', flush=True))
+    result = tournament.run(False)
     print(' ')
     print(lookahead_limit, result, mms.average_move_time(),flush=True)
 
-[test_minimax(n) for n in range(0,5)]
+self_play_group(3)
+[test_minimax(n) for n in range(0,3)]

@@ -14,7 +14,7 @@ class Board:
         if col < 0 or col >= self.cols:
             raise ValueError('Bad column value {}'.format(col))
 
-        col_values = list(map(lambda r: r[col], self.board))
+        col_values = list([r[col] for r in self.board])
         index_of_highest_empty_cell = len(self.board)
         while True:
             if col_values[index_of_highest_empty_cell - 1] == Board.EMPTY_CELL:
@@ -64,7 +64,7 @@ class Board:
         dr_count = self._count_in_direction(col, row, 1, 1)
         dl_count = self._count_in_direction(col, row, 1, -1)
 
-        return list(filter(lambda l: l >= self.line_length, [u_count+d_count-1, r_count+l_count-1, ur_count+dl_count-1, ul_count+dr_count-1]))
+        return list([l for l in [u_count+d_count-1, r_count+l_count-1, ur_count+dl_count-1, ul_count+dr_count-1] if l >= self.line_length])
 
     def _count_in_direction(self, init_col, init_row, row_delta, col_delta):
         col = init_col
@@ -82,4 +82,4 @@ class Board:
             return count
 
     def __str__(self):
-        return '\n'.join(map(lambda r : ' '.join(map(str,r)), reversed(self.board)))
+        return '\n'.join([' '.join(map(str,r)) for r in reversed(self.board)])

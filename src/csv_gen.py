@@ -16,9 +16,9 @@ with open('../log_d_09.txt', 'r') as f:
 
             d[key].append(n_val)
 
-    print(','.join(['i'] + list(d.keys())))
+    print((','.join(['i'] + list(d.keys()))))
     i=0
-    for row in list(zip_longest(*[list(l) for l in d.values()], fillvalue='0')):
-        print(','.join([str(i)] + list(row)))
+    for row in list(zip_longest(*[list(l) for l in list(d.values())], fillvalue='0')):
+        print((','.join([str(i)] + list(row))))
         i += 1
 

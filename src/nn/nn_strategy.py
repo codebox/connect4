@@ -36,7 +36,7 @@ class NnStrategy(Strategy):
                 score = self.network.eval_position(board_state)
                 move_scores[move] = (score, board_state)
 
-            move_to_play = max(move_scores.keys(), key=lambda k: move_scores.get(k)[0])
+            move_to_play = max(list(move_scores.keys()), key=lambda k: move_scores.get(k)[0])
             board_state = move_scores[move_to_play][1]
 
         self.current_game_moves.append((board_state, move_to_play))
@@ -63,6 +63,6 @@ class NnStrategy(Strategy):
         return self.network.get_name()
 
     def _build_board_state(self, game, player_id):
-        bs = list(map(lambda row: list(map(lambda v: 1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1, row)), game.board.board))
+        bs = list([list([1 if v == player_id else 0 if v == Board.EMPTY_CELL else -1 for v in row]) for row in game.board.board])
 
         return bs

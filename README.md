@@ -5,7 +5,13 @@ The code in this project is quite rough and includes a lot of experimentation an
 ## setup
     pip freeze > requirements.txt
     pip install -r requirements.txt
-    source .venv/bin/activate
+    source env/bin/activate
+
+## train network
+    python src/main.py
+
+## run webserver to play
+    python src/webserver.py
 
 ## tests
 from root of project:

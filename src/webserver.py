@@ -56,7 +56,7 @@ def move():
         # strategy = MctsStrategy()
         # strategy.rollout_limit = iter
         # strategy = NnStrategy(NetworkA(), False)
-        strategy = NnStrategy(NetworkD(), False)
+        strategy = NnStrategy(NetworkD())
 
         move = strategy.move(game, '0')
         lines = board.drop(move, '0');
